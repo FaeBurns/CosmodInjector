@@ -19,6 +19,7 @@ public static class Program
         HarmonyPatcher.Patch();
         Logger.Log("Patch complete");
 
+        // launch cosmoteer
         object[] parameters =
         {
             new string[]
@@ -32,13 +33,15 @@ public static class Program
     {
         const uint appId = 799600U;
 
+        // set directory *first* as steam_appid needs to be in the correct place
+        Directory.SetCurrentDirectory(File.ReadAllLines("game.txt")[0]);
+
         if (!File.Exists("steam_appid.txt"))
         {
             File.WriteAllText("steam_appid.txt", appId.ToString());
         }
 
-        Directory.SetCurrentDirectory(File.ReadAllLines("game.txt")[0]);
-
+        // ensure game is counted as launched on steam
         if (Steamworks.SteamAPI.RestartAppIfNecessary(new AppId_t(appId)))
         {
             Process.GetCurrentProcess().Kill();
