@@ -1,0 +1,30 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net7.0-windows</TargetFramework>
+        <Nullable>enable</Nullable>
+        <UseWindowsForms>true</UseWindowsForms>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <RuntimeFrameworkVersion>7.0.4</RuntimeFrameworkVersion>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Lib.Harmony" Version="2.3.0-prerelease.2" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+      <PackageReference Include="Steamworks.NET" Version="20.1.0" />
+      <Reference Include="Cosmoteer">
+          <HintPath>E:\SteamLibrary\steamapps\common\Cosmoteer\Bin\Cosmoteer.dll</HintPath>
+          <Private>False</Private>
+      </Reference>
+      <Reference Include="HalflingCore">
+          <HintPath>E:\SteamLibrary\steamapps\common\Cosmoteer\Bin\HalflingCore.dll</HintPath>
+          <Private>False</Private>
+      </Reference>
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\CosmoteerModLib\CosmoteerModLib.csproj" />
+    </ItemGroup>
+
+</Project>
