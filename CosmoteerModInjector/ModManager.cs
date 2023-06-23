@@ -14,6 +14,9 @@ public static class ModManager
     private static readonly List<DiscoveredMod> _discoveredMods = new List<DiscoveredMod>();
     private static readonly Dictionary<ModInfo, Assembly> _loadedMods = new Dictionary<ModInfo, Assembly>();
 
+    public static IReadOnlyDictionary<ModInfo, Assembly> LoadedMods => _loadedMods;
+    public static int ModCount => _loadedMods.Count;
+
     public static bool HasLoaded { get; private set; }
 
     public static void FetchMods(IEnumerable<string> paths)
