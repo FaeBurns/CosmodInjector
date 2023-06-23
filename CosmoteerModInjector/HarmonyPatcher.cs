@@ -17,9 +17,6 @@ internal static class HarmonyPatcher
             if (patchType == typeof(IPatch))
                 continue;
 
-            if (patchType.GetCustomAttribute<DisabledAttribute>() != null)
-                continue;
-
             IPatch patch = (IPatch)Activator.CreateInstance(patchType)!;
             patch.Patch(harmony);
         }

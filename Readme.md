@@ -27,4 +27,4 @@ Use of an assembly publicizer is required. The template is already set up with [
 
 ## License
 
-[MIT](https://github.com/FaeBurns/CosmodInjector/blob/master/License.txt)
+[MIT](https://github.com/FaeBurns/CosmodInjector/blob/main/License.txt)
