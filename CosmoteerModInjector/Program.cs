@@ -9,9 +9,12 @@ public static class Program
     [STAThread]
     public static void Main()
     {
+        Logger.Init();
+
         if (EnsureSteam())
             return;
 
+        Assemblies.Self = Assembly.GetExecutingAssembly();
         Assemblies.GameAssembly = Assembly.LoadFrom("Cosmoteer.dll");
         Assemblies.EngineAssembly = Assembly.LoadFrom("HalflingCore.dll");
         MethodBase entryPoint = Assemblies.GameAssembly.ManifestModule.ResolveMethod(Assemblies.GameAssembly.EntryPoint!.MetadataToken)!;

@@ -4,9 +4,10 @@ public static class Logger
 {
     private const string LogFile = "CMI_log.txt";
 
-    static Logger()
+    public static void Init()
     {
-        File.CreateText(LogFile).Close();
+        using StreamWriter sw = File.CreateText(LogFile);
+        sw.Write("");
     }
 
     public static void Log(string message)
