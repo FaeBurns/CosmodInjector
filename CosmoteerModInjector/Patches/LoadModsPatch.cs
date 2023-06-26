@@ -25,11 +25,19 @@ public class LoadModsPatch : IPatch
         if (ModManager.HasLoaded)
             return result;
 
+        // force add UserMods as they should always be enabled
+        Directory.CreateDirectory("UserMods");
+        ModManager.DiscoverMods(Directory.GetDirectories("UserMods"));
+
+        // get the paths of all enabled mods
         AbsolutePath[] enabledModPaths = GetEnabledModPaths().ToArray();
-        IEnumerable<string> paths = enabledModPaths.Select(p => p.ToString());
-        ModManager.FetchMods(paths);
+        IEnumerable<string> modPaths = enabledModPaths.Select(p => p.ToString());
+
+        // discover mods in specified path
+        ModManager.DiscoverMods(modPaths);
+
+        // perform load
         ModManager.LoadMods();
-        ModManager.InitializeMods();
         return result;
     }
 

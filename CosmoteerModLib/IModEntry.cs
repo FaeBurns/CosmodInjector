@@ -3,7 +3,7 @@
 /// <summary>
 /// An interface defining the entry point of a mod.
 /// </summary>
-public interface IMod
+public interface IModEntry
 {
     /// <summary>
     /// Called when the mod is loaded.

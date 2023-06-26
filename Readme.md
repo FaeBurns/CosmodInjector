@@ -1,4 +1,4 @@
-# Cosmoteer Mod Injector (Cosmod)
+# Cosmoteer Mod Injector
 
 ## Installation
 1. Download the zip file from the [Releases](https://github.com/FaeBurns/CosmodInjector/Releases) tab.

@@ -13,6 +13,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution files", "solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configurator", "Configurator\Configurator.csproj", "{FB1B8D80-E17C-4575-AFF5-FC78750A4805}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CosmoteerModInjector.Tests", "CosmoteerModInjector.Tests\CosmoteerModInjector.Tests.csproj", "{4B31D586-482F-460F-8A08-FA1B4246CD44}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,5 +37,9 @@ Global
 		{FB1B8D80-E17C-4575-AFF5-FC78750A4805}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB1B8D80-E17C-4575-AFF5-FC78750A4805}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB1B8D80-E17C-4575-AFF5-FC78750A4805}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B31D586-482F-460F-8A08-FA1B4246CD44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B31D586-482F-460F-8A08-FA1B4246CD44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B31D586-482F-460F-8A08-FA1B4246CD44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B31D586-482F-460F-8A08-FA1B4246CD44}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

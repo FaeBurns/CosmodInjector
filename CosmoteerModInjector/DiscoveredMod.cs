@@ -1,4 +1,6 @@
 ﻿#nullable disable
+using CosmoteerModLib;
+
 namespace CosmoteerModInjector;
 
 public class DiscoveredMod

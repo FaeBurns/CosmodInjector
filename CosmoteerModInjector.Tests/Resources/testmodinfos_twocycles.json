@@ -1,0 +1,30 @@
+[
+  {
+    "name" : "test.mod.1",
+    "assembly" : "Mod.dll",
+    "dependencies" : [
+      "test.mod.2"
+    ]
+  },
+  {
+    "name" : "test.mod.2",
+    "assembly" : "Mod.dll",
+    "dependencies" : [
+      "test.mod.1"
+    ]
+  },
+  {
+    "name" : "test.mod.3",
+    "assembly" : "Mod.dll",
+    "dependencies" : [
+      "test.mod.4"
+    ]
+  },
+  {
+    "name" : "test.mod.4",
+    "assembly" : "Mod.dll",
+    "dependencies" : [
+      "test.mod.3"
+    ]
+  }
+]
