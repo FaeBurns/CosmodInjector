@@ -1,5 +1,7 @@
 ﻿using System.Collections;
 using System.Reflection;
+using CosmoteerModLib;
+using Halfling;
 using Halfling.IO;
 using HarmonyLib;
 
@@ -24,6 +26,9 @@ public class LoadModsPatch : IPatch
     {
         if (ModManager.HasLoaded)
             return result;
+
+        // now is a good time to hook the logger
+        App.Director.FrameEnded += (_, _) => Logger.FlushAll(Logger.LogFlushMode.MultipleFiles);
 
         // force add UserMods as they should always be enabled
         Directory.CreateDirectory("UserMods");

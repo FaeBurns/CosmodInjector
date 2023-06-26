@@ -32,7 +32,7 @@ public static class ModManager
 
         foreach (DiscoveredMod mod in _discoveredMods)
         {
-            Logger.Log($"Discovered mod {mod}");
+            Logger.GetLogger("CMI").Log($"Discovered mod {mod}");
         }
     }
 

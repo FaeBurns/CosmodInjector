@@ -13,4 +13,9 @@ public class DiscoveredMod
         Path = path;
         ModInfo = modInfo;
     }
+
+    public override string ToString()
+    {
+        return ModInfo.ModName;
+    }
 }
