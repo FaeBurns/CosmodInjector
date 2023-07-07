@@ -1,13 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Go">
 
     <PropertyGroup>
-        <TargetFramework>net7.0</TargetFramework>
+        <TargetFramework>net7.0-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
+        <PlatformTarget>x64</PlatformTarget>
         <Nullable>enable</Nullable>
     </PropertyGroup>
+    
+    <Import Project="../gamelibs.targets" />
 
     <ItemGroup>
       <PackageReference Include="JetBrains.Annotations" Version="2023.2.0-eap3" />
+      <PackageReference Include="Lib.Harmony" Version="2.3.0-prerelease.2" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     </ItemGroup>
 

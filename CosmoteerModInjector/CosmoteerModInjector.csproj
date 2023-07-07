@@ -10,18 +10,12 @@
         <PlatformTarget>x64</PlatformTarget>
     </PropertyGroup>
 
+    <Import Project="../gamelibs.targets" />
+
     <ItemGroup>
       <PackageReference Include="Lib.Harmony" Version="2.3.0-prerelease.2" />
       <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
       <PackageReference Include="Steamworks.NET" Version="20.1.0" />
-      <Reference Include="Cosmoteer">
-          <HintPath>E:\SteamLibrary\steamapps\common\Cosmoteer\Bin\Cosmoteer.dll</HintPath>
-          <Private>False</Private>
-      </Reference>
-      <Reference Include="HalflingCore">
-          <HintPath>E:\SteamLibrary\steamapps\common\Cosmoteer\Bin\HalflingCore.dll</HintPath>
-          <Private>False</Private>
-      </Reference>
     </ItemGroup>
 
     <ItemGroup>

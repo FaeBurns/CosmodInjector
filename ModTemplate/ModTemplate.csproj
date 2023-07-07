@@ -3,20 +3,12 @@
     <PropertyGroup>
         <TargetFramework>net7.0-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
+        <UseWindowsForms>true</UseWindowsForms>
         <Nullable>enable</Nullable>
+        <PlatformTarget>x64</PlatformTarget>
     </PropertyGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Krafs.Publicizer" Version="2.2.1">
-            <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-        </PackageReference>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Publicize Include="Cosmoteer" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
-        <Publicize Include="HalflingCore" IncludeCompilerGeneratedMembers="false" />
-    </ItemGroup>
+    <Import Project="../gamelibs.targets"/>
 
     <ItemGroup>
       <None Update="mod.json">
@@ -26,23 +18,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\CosmoteerModLib\CosmoteerModLib.csproj" />
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="Cosmoteer">
-        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cosmoteer\Bin\Cosmoteer.dll</HintPath>
-        <Private>False</Private>
-      </Reference>
-      <Reference Include="HalflingCore">
-        <HintPath>C:\Program Files (x86)\Steam\steamapps\common\Cosmoteer\Bin\HalflingCore.dll</HintPath>
-        <Private>False</Private>
-      </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Reference Include="System.Windows.Forms">
-        <HintPath>C:\Program Files\dotnet\shared\Microsoft.WindowsDesktop.App\7.0.5\System.Windows.Forms.dll</HintPath>
-      </Reference>
     </ItemGroup>
 
 </Project>

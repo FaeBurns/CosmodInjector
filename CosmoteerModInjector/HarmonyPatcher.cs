@@ -9,7 +9,7 @@ internal static class HarmonyPatcher
     public static void Patch()
     {
         Harmony harmony = new Harmony("bean.cosmoteer.injector");
-        harmony.PatchAll(Assembly.GetExecutingAssembly());
+        harmony.PatchAll(Assemblies.Self);
 
         IEnumerable<Type> patchTypes = Assembly.GetExecutingAssembly().GetTypes().Where(p => typeof(IPatch).IsAssignableFrom(p)).ToArray();
         foreach (Type patchType in patchTypes)

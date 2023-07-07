@@ -1,0 +1,35 @@
+<Project>
+
+    <PropertyGroup>
+        <SteamPath>C:\Program Files (x86)\Steam\steamapps\common\Cosmoteer\Bin</SteamPath>
+    </PropertyGroup>
+
+    <Import Project="user.targets"/>
+
+    <ItemGroup>
+        <PackageReference Include="Krafs.Publicizer" Version="2.2.1">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Publicize Include="Cosmoteer" IncludeCompilerGeneratedMembers="false" IncludeVirtualMembers="false" />
+        <Publicize Include="HalflingCore" IncludeCompilerGeneratedMembers="false" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <Reference Include="Cosmoteer">
+            <HintPath>$(SteamPath)\Cosmoteer.dll</HintPath>
+            <Private>false</Private>
+        </Reference>
+        <Reference Include="HalflingCore">
+            <HintPath>$(SteamPath)\HalflingCore.dll</HintPath>
+            <Private>false</Private>
+        </Reference>
+    </ItemGroup>
+
+    <PropertyGroup>
+        <NoWarn>0436</NoWarn>
+    </PropertyGroup>
+</Project>

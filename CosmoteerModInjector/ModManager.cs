@@ -40,25 +40,25 @@ public static class ModManager
     {
         foreach (DiscoveredMod mod in _discoveredMods)
         {
+            Assembly loadedMod;
             if (Debugger.IsAttached)
             {
-                Assembly loadedMod = LoadMod(mod);
-                _modAssemblies.Add(mod.ModInfo, loadedMod);
-                _loadedMods.Add(mod.ModInfo);
+                loadedMod = LoadMod(mod);
             }
             else
             {
                 try
                 {
-                    Assembly loadedMod = LoadMod(mod);
-                    _modAssemblies.Add(mod.ModInfo, loadedMod);
-                    _loadedMods.Add(mod.ModInfo);
+                    loadedMod = LoadMod(mod);
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show($"Exception trying to load mod {mod.ModInfo.ModName} from {mod.Path}. Exception:\n" + e.Message);
+                    continue;
                 }
             }
+            _modAssemblies.Add(mod.ModInfo, loadedMod);
+            _loadedMods.Add(mod.ModInfo);
         }
 
         if (_loadedMods.TrySortInPlace(out List<ModDependencyError> errors))

@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Reflection;
 using CosmoteerModLib;
+using HarmonyLib;
 using Steamworks;
 
 namespace CosmoteerModInjector;
@@ -28,6 +29,12 @@ public static class Program
 
         HarmonyPatcher.Patch();
         Logger.GetLogger("CMI").Log("Patch Complete");
+
+        // if debug mode, add devmode args if not already present
+        #if DEBUG
+        if (!args.Contains("--devmode"))
+            args = new List<string>(args).AddItem("--devmode").ToArray();
+        #endif
 
         // launch cosmoteer
         object[] parameters =

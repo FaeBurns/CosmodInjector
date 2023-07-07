@@ -9,6 +9,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "solution files", "solution files", "{A1CF8993-39CD-48E4-8B3D-BE46B9D0EC6B}"
 	ProjectSection(SolutionItems) = preProject
 		Readme.md = Readme.md
+		gamelibs.targets = gamelibs.targets
+		user.targets = user.targets
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Configurator", "Configurator\Configurator.csproj", "{FB1B8D80-E17C-4575-AFF5-FC78750A4805}"

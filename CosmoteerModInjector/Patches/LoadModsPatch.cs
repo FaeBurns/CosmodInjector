@@ -28,7 +28,7 @@ public class LoadModsPatch : IPatch
             return result;
 
         // now is a good time to hook the logger
-        App.Director.FrameEnded += (_, _) => Logger.FlushAll(Logger.LogFlushMode.MultipleFiles);
+        App.Director.FrameEnded += (_, _) => Logger.FlushAll(Logger.LogFlushMode.SingleFile);
 
         // force add UserMods as they should always be enabled
         Directory.CreateDirectory("UserMods");

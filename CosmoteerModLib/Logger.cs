@@ -7,6 +7,7 @@ namespace CosmoteerModLib;
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Logger
 {
+    private static readonly HashSet<string> _writtenLogNames = new HashSet<string>();
     private static int _logIndex;
     private static DirectoryInfo _logFolder = null!;
     private static readonly List<Logger> _loggers = new List<Logger>();
@@ -43,9 +44,6 @@ public class Logger
         Logger newLogger = new Logger(logName);
         _loggers.Add(newLogger);
         _lookup.Add(logName, newLogger);
-
-        // reset the file
-        File.WriteAllText(GetLogPath(logName), String.Empty);
 
         return newLogger;
     }
@@ -97,6 +95,13 @@ public class Logger
     private static StreamWriter GetLogStreamFromName(string name)
     {
         string logPath = GetLogPath(name);
+
+        if (!_writtenLogNames.Contains(name))
+        {
+            File.WriteAllText(logPath, String.Empty);
+            _writtenLogNames.Add(name);
+        }
+
         return new StreamWriter(logPath, true);
     }
 
@@ -118,7 +123,7 @@ public class Logger
             Message message = _messageQueue.Dequeue();
 
             if (includeName)
-                stringBuilder.AppendFormat($"[{0}] ", LogName);
+                stringBuilder.AppendFormat("[{0}] ", LogName);
 
             message.Compile(stringBuilder);
             stringBuilder.AppendLine();
@@ -134,9 +139,9 @@ public class Logger
 
     private readonly struct Message
     {
-        private const string DateFormatString = "yy/MM/dd";
+        private const string DateFormatString = "dd/MM/yy";
         private const string TimeFormatString = "hh:mm:ss";
-        private const string CombinedFormatString = DateFormatString + "/" + TimeFormatString;
+        private const string CombinedFormatString = DateFormatString + " " + TimeFormatString;
 
         private readonly DateTime _logTime;
         public readonly string Data;
