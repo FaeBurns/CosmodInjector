@@ -1,6 +1,7 @@
 ﻿using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
 using CosmoteerModLib.Exceptions;
+using JetBrains.Annotations;
 using Newtonsoft.Json;
 
 namespace CosmoteerModLib;
@@ -21,6 +22,7 @@ public class ModInfo
     public ModDependencyInfo[] Dependencies { get; private set; }
 
     [OnDeserialized]
+    [UsedImplicitly]
     private void OnDeserialized(StreamingContext streamingContext)
     {
         Dependencies = DependencyStrings.Select(s => new ModDependencyInfo(s)).ToArray();

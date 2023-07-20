@@ -50,7 +50,7 @@ public class Logger
 
     /// <summary>
     /// Gets the logger for the calling assembly.
-    /// <seealso cref="Assembly.GetCallingAssembly"/>.
+    /// <seealso cref="Assembly.GetCallingAssembly"/>
     /// </summary>
     /// <returns></returns>
     public static Logger GetLocal()
@@ -122,11 +122,14 @@ public class Logger
         {
             Message message = _messageQueue.Dequeue();
 
+            stringBuilder.Append("[");
+            stringBuilder.Append(message.LogTime.ToString(Message.CombinedFormatString));
+            stringBuilder.Append("] ");
+
             if (includeName)
                 stringBuilder.AppendFormat("[{0}] ", LogName);
 
-            message.Compile(stringBuilder);
-            stringBuilder.AppendLine();
+            stringBuilder.AppendLine(message.Data);
         }
         stream.Write(stringBuilder);
     }
@@ -140,29 +143,21 @@ public class Logger
     private readonly struct Message
     {
         private const string DateFormatString = "dd/MM/yy";
-        private const string TimeFormatString = "hh:mm:ss";
-        private const string CombinedFormatString = DateFormatString + " " + TimeFormatString;
+        private const string TimeFormatString = "HH:mm:ss";
+        public const string CombinedFormatString = DateFormatString + " " + TimeFormatString;
 
-        private readonly DateTime _logTime;
+        public readonly DateTime LogTime;
         public readonly string Data;
 
         public Message(string data)
         {
             Data = data;
-            _logTime = DateTime.Now;
+            LogTime = DateTime.Now;
         }
 
         public override string ToString()
         {
-            return $"[{_logTime.ToString(CombinedFormatString)}] {Data}";
-        }
-
-        public void Compile(StringBuilder builder)
-        {
-            builder.Append("[");
-            builder.Append(_logTime.ToString(CombinedFormatString));
-            builder.Append("] ");
-            builder.Append(Data);
+            return $"[{LogTime.ToString(CombinedFormatString)}] {Data}";
         }
     }
 }
