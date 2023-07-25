@@ -10,8 +10,6 @@
 *.userosscache
 *.sln.docstates
 
-user.targets
-
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -400,3 +398,4 @@ FodyWeavers.xsd
 *.sln.iml
 **/.idea/workspace.xml 
 **/.idea/tasks.xml
+**/.idea/.name

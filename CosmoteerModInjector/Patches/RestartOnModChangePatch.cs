@@ -5,19 +5,19 @@ namespace CosmoteerModInjector.Patches;
 
 public class RestartOnModChangePatch : IPatch
 {
-    private static Type _gameAppType = null!;
+    private static Type s_gameAppType = null!;
 
     public void Patch(Harmony harmony)
     {
-        _gameAppType = Assemblies.GameAssembly.GetType("Cosmoteer.GameApp")!;
-        MethodInfo method = _gameAppType.GetMethod("RestartApp", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)!;
+        s_gameAppType = Assemblies.GameAssembly.GetType("Cosmoteer.GameApp")!;
+        MethodInfo method = s_gameAppType.GetMethod("RestartApp", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)!;
 
         harmony.Patch(method, postfix: new HarmonyMethod(RestartAppPostfix));
     }
 
     private static void RestartAppPostfix()
     {
-        PropertyInfo targetProperty = _gameAppType.GetProperty("FileToRunOnExit", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)!;
+        PropertyInfo targetProperty = s_gameAppType.GetProperty("FileToRunOnExit", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)!;
         (string, string, string) existingValue = ((string, string, string))targetProperty.GetMethod!.Invoke(null, null)!;
 
         string exePath = Path.ChangeExtension(Assemblies.Self.Location!, "exe")!;

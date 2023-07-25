@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
+using System.Runtime.CompilerServices;
 using System.Text;
 using CosmoteerModInjector.Exceptions;
 using CosmoteerModLib;
@@ -10,13 +11,13 @@ namespace CosmoteerModInjector;
 
 public static class ModManager
 {
-    private static readonly List<DiscoveredMod> _discoveredMods = new List<DiscoveredMod>();
-    private static readonly Dictionary<ModInfo, Assembly> _modAssemblies = new Dictionary<ModInfo, Assembly>();
-    private static readonly ModCollection _loadedMods = new ModCollection();
+    private static readonly List<DiscoveredMod> s_discoveredMods = new List<DiscoveredMod>();
+    private static readonly Dictionary<ModInfo, Assembly> s_modAssemblies = new Dictionary<ModInfo, Assembly>();
+    private static readonly ModCollection s_loadedMods = new ModCollection();
 
-    public static IReadOnlyList<ModInfo> LoadedMods => _loadedMods;
+    public static IReadOnlyList<ModInfo> LoadedMods => s_loadedMods;
 
-    public static int ModCount => _modAssemblies.Count;
+    public static int ModCount => s_modAssemblies.Count;
 
     public static bool HasLoaded { get; private set; }
 
@@ -26,11 +27,11 @@ public static class ModManager
         {
             if (TryDiscoverMod(path, out DiscoveredMod? mod))
             {
-                _discoveredMods.Add(mod);
+                s_discoveredMods.Add(mod);
             }
         }
 
-        foreach (DiscoveredMod mod in _discoveredMods)
+        foreach (DiscoveredMod mod in s_discoveredMods)
         {
             Logger.GetLogger("CMI").Log($"Discovered mod {mod}");
         }
@@ -38,30 +39,26 @@ public static class ModManager
 
     public static void LoadMods()
     {
-        foreach (DiscoveredMod mod in _discoveredMods)
+        foreach (DiscoveredMod mod in s_discoveredMods)
         {
             Assembly loadedMod;
-            if (Debugger.IsAttached)
+            try
             {
                 loadedMod = LoadMod(mod);
             }
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    loadedMod = LoadMod(mod);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show($"Exception trying to load mod {mod.ModInfo.ModName} from {mod.Path}. Exception:\n" + e.Message);
-                    continue;
-                }
+                if (Debugger.IsAttached)
+                    Debugger.Break();
+                
+                MessageBox.Show($"Exception trying to load mod {mod.ModInfo.ModName} from {mod.Path}. Exception:\n" + e.Message);
+                continue;
             }
-            _modAssemblies.Add(mod.ModInfo, loadedMod);
-            _loadedMods.Add(mod.ModInfo);
+            s_modAssemblies.Add(mod.ModInfo, loadedMod);
+            s_loadedMods.Add(mod.ModInfo);
         }
 
-        if (_loadedMods.TrySortInPlace(out List<ModDependencyError> errors))
+        if (s_loadedMods.TrySortInPlace(out List<ModDependencyError> errors))
         {
             // if the dependency sort had no errors, initialize all mods
             InitializeMods();
@@ -74,30 +71,28 @@ public static class ModManager
             {
                 errorBuilder.AppendLine($"{error.Mod} -> {error.Dependency}");
             }
+
             errorBuilder.AppendLine("Press OK to continue. No CMI mods will be initialized");
             MessageBox.Show(errorBuilder.ToString(), "Mod sort error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
-
+    
     private static void InitializeMods()
     {
-        foreach (ModInfo mod in _loadedMods.Order)
+        foreach (ModInfo mod in s_loadedMods.Order)
         {
-            Assembly modAssembly = _modAssemblies[mod];
-            if (Debugger.IsAttached)
+            Assembly modAssembly = s_modAssemblies[mod];
+            
+            try
             {
                 ExecuteEntryPoint(modAssembly);
             }
-            else
+            catch (Exception e)
             {
-                try
-                {
-                    ExecuteEntryPoint(modAssembly);
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show($"Exception trying to initialize mod {mod.ModName}. Exception:\n" + e.Message);
-                }
+                if (Debugger.IsAttached)
+                    Debugger.Break();
+                
+                MessageBox.Show($"Exception trying to initialize mod {mod.ModName}. Exception:\n" + e.Message);
             }
         }
 
@@ -161,6 +156,4 @@ public static class ModManager
                 throw new InvalidDependencyNameException(modInfo, dependency.ModName);
         }
     }
-
-
 }

@@ -37,7 +37,7 @@ public class ModCollectionTests
         Assert.IsFalse(result);
 
         Assert.That(errors.Count, Is.EqualTo(1));
-        Assert.That(errors[0].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.Missing));
+        Assert.That(errors[0].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.MISSING));
     }
 
     [Test]
@@ -50,8 +50,8 @@ public class ModCollectionTests
         Assert.IsFalse(result);
 
         Assert.That(errors.Count, Is.EqualTo(2));
-        Assert.That(errors[0].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CyclicalDependency));
-        Assert.That(errors[1].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CyclicalDependency));
+        Assert.That(errors[0].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CYCLICAL_DEPENDENCY));
+        Assert.That(errors[1].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CYCLICAL_DEPENDENCY));
     }
 
     [Test]
@@ -64,10 +64,10 @@ public class ModCollectionTests
         Assert.IsFalse(result);
 
         Assert.That(errors.Count, Is.EqualTo(4));
-        Assert.That(errors[0].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CyclicalDependency));
-        Assert.That(errors[1].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CyclicalDependency));
-        Assert.That(errors[2].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CyclicalDependency));
-        Assert.That(errors[3].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CyclicalDependency));
+        Assert.That(errors[0].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CYCLICAL_DEPENDENCY));
+        Assert.That(errors[1].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CYCLICAL_DEPENDENCY));
+        Assert.That(errors[2].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CYCLICAL_DEPENDENCY));
+        Assert.That(errors[3].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CYCLICAL_DEPENDENCY));
     }
 
     [Test]
@@ -80,8 +80,8 @@ public class ModCollectionTests
         Assert.IsFalse(result);
 
         Assert.That(errors.Count, Is.EqualTo(3));
-        Assert.That(errors[0].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CyclicalDependency));
-        Assert.That(errors[1].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CyclicalDependency));
-        Assert.That(errors[2].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CyclicalDependency));
+        Assert.That(errors[0].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CYCLICAL_DEPENDENCY));
+        Assert.That(errors[1].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CYCLICAL_DEPENDENCY));
+        Assert.That(errors[2].Type, Is.EqualTo(ModDependencyError.ModDependencyErrorReason.CYCLICAL_DEPENDENCY));
     }
 }

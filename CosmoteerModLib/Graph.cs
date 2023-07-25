@@ -2,12 +2,12 @@
 
 public class Graph<T>
 {
-    private readonly List<Node> _nodes = new List<Node>();
+    private readonly List<Node> m_nodes = new List<Node>();
 
     public Node Add(T data)
     {
-        Node node = new Node(data, _nodes.Count);
-        _nodes.Add(node);
+        Node node = new Node(data, m_nodes.Count);
+        m_nodes.Add(node);
         return node;
     }
 
@@ -15,10 +15,10 @@ public class Graph<T>
     {
         switch (connectionType)
         {
-            case ConnectionType.OneWay:
+            case ConnectionType.ONE_WAY:
                 ConnectSingle(a, b);
                 break;
-            case ConnectionType.TwoWay:
+            case ConnectionType.TWO_WAY:
                 ConnectSingle(a, b);
                 ConnectSingle(b, a);
                 break;
@@ -42,14 +42,14 @@ public class Graph<T>
         HashSet<Node> seenNodes = new HashSet<Node>();
         List<(Node, List<Node>)> cyclicNodes = new List<(Node, List<Node>)>();
 
-        foreach (Graph<T>.Node node in _nodes)
+        foreach (Graph<T>.Node node in m_nodes)
         {
             // if this node has been seen before in the search then skip
             if (seenNodes.Contains(node))
                 continue;
 
-            bool[] visited = new bool[_nodes.Count];
-            bool[] searching = new bool[_nodes.Count];
+            bool[] visited = new bool[m_nodes.Count];
+            bool[] searching = new bool[m_nodes.Count];
 
             if (IsCyclicRecursive(node, visited, searching, seenNodes))
             {
@@ -57,7 +57,7 @@ public class Graph<T>
                 {
                     bool inCycle = searching[i];
                     if (inCycle)
-                        cyclicNodes.Add((_nodes[i], _nodes[i].OutgoingConnections.Where(n => searching[n.Index]).ToList()));
+                        cyclicNodes.Add((m_nodes[i], m_nodes[i].OutgoingConnections.Where(n => searching[n.Index]).ToList()));
                 }
             }
         }
@@ -74,9 +74,9 @@ public class Graph<T>
 
         visited[node.Index] = true;
         searching[node.Index] = true;
-        seenNodes.Add(_nodes[node.Index]);
+        seenNodes.Add(m_nodes[node.Index]);
 
-        foreach (Node child in _nodes[node.Index].OutgoingConnections)
+        foreach (Node child in m_nodes[node.Index].OutgoingConnections)
             if (IsCyclicRecursive(child, visited, searching, seenNodes))
                 return true;
 
@@ -108,6 +108,6 @@ public class Graph<T>
 
 public enum ConnectionType
 {
-    OneWay,
-    TwoWay,
+    ONE_WAY,
+    TWO_WAY,
 }

@@ -17,7 +17,7 @@ public class ModDependencyError
 
     public enum ModDependencyErrorReason
     {
-        Missing,
-        CyclicalDependency,
+        MISSING,
+        CYCLICAL_DEPENDENCY,
     }
 }

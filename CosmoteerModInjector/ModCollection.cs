@@ -7,9 +7,9 @@ namespace CosmoteerModInjector;
 
 public class ModCollection : IReadOnlyList<ModInfo>
 {
-    private List<ModInfo> _mods = new List<ModInfo>();
+    private List<ModInfo> m_mods = new List<ModInfo>();
 
-    public IReadOnlyList<ModInfo> Order => _mods;
+    public IReadOnlyList<ModInfo> Order => m_mods;
 
     public void AddRange(IEnumerable<ModInfo> modInfos)
     {
@@ -21,12 +21,12 @@ public class ModCollection : IReadOnlyList<ModInfo>
 
     public void Add(ModInfo modInfo)
     {
-        _mods.Add(modInfo);
+        m_mods.Add(modInfo);
     }
 
     public void Remove(ModInfo modInfo)
     {
-        _mods.Remove(modInfo);
+        m_mods.Remove(modInfo);
     }
 
     /// <summary>
@@ -36,10 +36,10 @@ public class ModCollection : IReadOnlyList<ModInfo>
     /// <returns>True if the sort was successful, false if not</returns>
     public bool TrySortInPlace(out List<ModDependencyError> errors)
     {
-        (List<ModInfo> mods, List<ModDependencyError> fulfillmentErrors) = TrySortDependencies(_mods);
+        (List<ModInfo> mods, List<ModDependencyError> fulfillmentErrors) = TrySortDependencies(m_mods);
         errors = fulfillmentErrors;
         if (fulfillmentErrors.Count == 0)
-            _mods = mods;
+            m_mods = mods;
 
         return errors.Count == 0;
     }
@@ -111,7 +111,7 @@ public class ModCollection : IReadOnlyList<ModInfo>
 
             foreach (ModDependencyInfo dependency in mod.Dependencies)
             {
-                dependencyGraph.ConnectTo(modNode, nodeMap[dependency.ModName], ConnectionType.OneWay);
+                dependencyGraph.ConnectTo(modNode, nodeMap[dependency.ModName], ConnectionType.ONE_WAY);
             }
         }
 
@@ -121,7 +121,7 @@ public class ModCollection : IReadOnlyList<ModInfo>
         {
             foreach (Graph<ModInfo>.Node child in cyclicChildren)
             {
-                dependencyErrors.Add(new ModDependencyError(node.Data, child.Data.ModName, ModDependencyError.ModDependencyErrorReason.CyclicalDependency));
+                dependencyErrors.Add(new ModDependencyError(node.Data, child.Data.ModName, ModDependencyError.ModDependencyErrorReason.CYCLICAL_DEPENDENCY));
             }
         }
 
@@ -178,7 +178,7 @@ public class ModCollection : IReadOnlyList<ModInfo>
                 // if it is not, then add the error and set the flag
                 if (!dependency.IsOptional)
                 {
-                    fulfillmentErrors.Add(new ModDependencyError(modInfo, dependency.ModName, ModDependencyError.ModDependencyErrorReason.Missing));
+                    fulfillmentErrors.Add(new ModDependencyError(modInfo, dependency.ModName, ModDependencyError.ModDependencyErrorReason.MISSING));
                     allDependenciesPresent = false;
                 }
             }
@@ -189,7 +189,7 @@ public class ModCollection : IReadOnlyList<ModInfo>
 
     public IEnumerator<ModInfo> GetEnumerator()
     {
-        return _mods.GetEnumerator();
+        return m_mods.GetEnumerator();
     }
 
     IEnumerator IEnumerable.GetEnumerator()
@@ -197,7 +197,7 @@ public class ModCollection : IReadOnlyList<ModInfo>
         return GetEnumerator();
     }
 
-    public int Count => _mods.Count;
+    public int Count => m_mods.Count;
 
-    public ModInfo this[int index] => _mods[index];
+    public ModInfo this[int index] => m_mods[index];
 }

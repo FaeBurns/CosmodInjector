@@ -7,21 +7,21 @@ namespace CosmoteerModLib;
 [UsedImplicitly(ImplicitUseTargetFlags.WithMembers)]
 public class Logger
 {
-    private static readonly HashSet<string> _writtenLogNames = new HashSet<string>();
-    private static int _logIndex;
-    private static DirectoryInfo _logFolder = null!;
-    private static readonly List<Logger> _loggers = new List<Logger>();
-    private static readonly Dictionary<string, Logger> _lookup = new Dictionary<string, Logger>();
+    private static readonly HashSet<string> s_writtenLogNames = new HashSet<string>();
+    private static int s_logIndex;
+    private static DirectoryInfo s_logFolder = null!;
+    private static readonly List<Logger> s_loggers = new List<Logger>();
+    private static readonly Dictionary<string, Logger> s_lookup = new Dictionary<string, Logger>();
 
-    private readonly Queue<Message> _messageQueue = new Queue<Message>();
+    private readonly Queue<Message> m_messageQueue = new Queue<Message>();
 
     internal string LogName { get; }
 
     internal static void Init(DirectoryInfo gameDir, int logIndex)
     {
-        _logFolder = new DirectoryInfo(Path.Combine(gameDir.FullName, "Logs"));
-        _logIndex = logIndex;
-        Directory.CreateDirectory(_logFolder.FullName);
+        s_logFolder = new DirectoryInfo(Path.Combine(gameDir.FullName, "Logs"));
+        s_logIndex = logIndex;
+        Directory.CreateDirectory(s_logFolder.FullName);
     }
 
     internal Logger(string logName)
@@ -36,14 +36,14 @@ public class Logger
     /// <returns>The logger instance.</returns>
     public static Logger GetLogger(string logName)
     {
-        if (_lookup.TryGetValue(logName, out Logger? logger))
+        if (s_lookup.TryGetValue(logName, out Logger? logger))
         {
             return logger;
         }
 
         Logger newLogger = new Logger(logName);
-        _loggers.Add(newLogger);
-        _lookup.Add(logName, newLogger);
+        s_loggers.Add(newLogger);
+        s_lookup.Add(logName, newLogger);
 
         return newLogger;
     }
@@ -71,17 +71,17 @@ public class Logger
     {
         switch (flushMode)
         {
-            case LogFlushMode.SingleFile:
+            case LogFlushMode.SINGLE_FILE:
                 using (StreamWriter logStream = GetLogStreamFromName("log"))
                 {
-                    foreach (Logger logger in _loggers)
+                    foreach (Logger logger in s_loggers)
                     {
                         logger.FlushToStream(logStream, true);
                     }
                 }
                 break;
-            case LogFlushMode.MultipleFiles:
-                foreach (Logger logger in _loggers)
+            case LogFlushMode.MULTIPLE_FILES:
+                foreach (Logger logger in s_loggers)
                 {
                     using StreamWriter logStream = GetLogStreamFromName(logger.LogName);
                     logger.FlushToStream(logStream, false);
@@ -96,10 +96,10 @@ public class Logger
     {
         string logPath = GetLogPath(name);
 
-        if (!_writtenLogNames.Contains(name))
+        if (!s_writtenLogNames.Contains(name))
         {
             File.WriteAllText(logPath, String.Empty);
-            _writtenLogNames.Add(name);
+            s_writtenLogNames.Add(name);
         }
 
         return new StreamWriter(logPath, true);
@@ -107,23 +107,23 @@ public class Logger
 
     private static string GetLogPath(string name)
     {
-        return Path.Combine(_logFolder.FullName, name + (_logIndex > 0 ? _logIndex.ToString() : "") + ".txt");
+        return Path.Combine(s_logFolder.FullName, name + (s_logIndex > 0 ? s_logIndex.ToString() : "") + ".txt");
     }
 
     public void Log(string message)
     {
-        _messageQueue.Enqueue(new Message(message));
+        m_messageQueue.Enqueue(new Message(message));
     }
 
     private void FlushToStream(StreamWriter stream, bool includeName)
     {
         StringBuilder stringBuilder = new StringBuilder();
-        while (_messageQueue.Count > 0)
+        while (m_messageQueue.Count > 0)
         {
-            Message message = _messageQueue.Dequeue();
+            Message message = m_messageQueue.Dequeue();
 
             stringBuilder.Append("[");
-            stringBuilder.Append(message.LogTime.ToString(Message.CombinedFormatString));
+            stringBuilder.Append(message.LogTime.ToString(Message.COMBINED_FORMAT_STRING));
             stringBuilder.Append("] ");
 
             if (includeName)
@@ -136,15 +136,15 @@ public class Logger
 
     internal enum LogFlushMode
     {
-        SingleFile,
-        MultipleFiles,
+        SINGLE_FILE,
+        MULTIPLE_FILES,
     }
 
     private readonly struct Message
     {
-        private const string DateFormatString = "dd/MM/yy";
-        private const string TimeFormatString = "HH:mm:ss";
-        public const string CombinedFormatString = DateFormatString + " " + TimeFormatString;
+        private const string DATE_FORMAT_STRING = "dd/MM/yy";
+        private const string TIME_FORMAT_STRING = "HH:mm:ss";
+        public const string COMBINED_FORMAT_STRING = DATE_FORMAT_STRING + " " + TIME_FORMAT_STRING;
 
         public readonly DateTime LogTime;
         public readonly string Data;
@@ -157,7 +157,7 @@ public class Logger
 
         public override string ToString()
         {
-            return $"[{LogTime.ToString(CombinedFormatString)}] {Data}";
+            return $"[{LogTime.ToString(COMBINED_FORMAT_STRING)}] {Data}";
         }
     }
 }
